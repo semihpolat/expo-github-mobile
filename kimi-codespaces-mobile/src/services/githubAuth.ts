@@ -8,6 +8,7 @@ WebBrowser.maybeCompleteAuthSession()
 // TODO: Add your GitHub OAuth App credentials here
 // Create at: https://github.com/settings/developers
 const GITHUB_CLIENT_ID = process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID || ''
+const GITHUB_CLIENT_SECRET = process.env.EXPO_PUBLIC_GITHUB_CLIENT_SECRET || ''
 const REDIRECT_URI = AuthSession.makeRedirectUri({
   scheme: 'kimicodespaces',
   path: 'auth',
@@ -113,6 +114,7 @@ export class GitHubAuth {
       clientId: GITHUB_CLIENT_ID,
       redirectUri: REDIRECT_URI,
       scopes: ['repo', 'user', 'codespaces'],
+      usePKCE: false, // Disable PKCE for GitHub OAuth
     })
 
     // Prompt the user to authorize
@@ -163,6 +165,7 @@ export class GitHubAuth {
       },
       body: JSON.stringify({
         client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
         code,
         redirect_uri: REDIRECT_URI,
       }),
